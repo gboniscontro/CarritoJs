@@ -5,7 +5,7 @@ function isItemInCart(currId){
     arrCart.forEach((value)=> {
             if (value.id == currId) {
                 value.qty++
-                console.log('se encontro' + value.id)
+               // console.log('se encontro' + value.id)
                 blnFind= true
             } 
         })
