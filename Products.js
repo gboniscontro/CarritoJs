@@ -1,6 +1,5 @@
-class Products{
-    constructor(id,name,img,price,qty)
-    {
+export default class Products {
+    constructor(id, name, img, price, qty) {
         this.id = id
         this.name = name
         this.img = img
@@ -8,5 +7,5 @@ class Products{
         this.qty = qty
 
     }
-    
+
 }

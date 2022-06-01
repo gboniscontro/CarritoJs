@@ -1,4 +1,6 @@
 import Cart from './Cart.js'
+import Products from './Products.js'
+
 
 function setDark() {
     document.querySelector(".navbar").classList.remove("navbar-light")
@@ -63,12 +65,48 @@ function search_prod() {
     show(products)
 }
 function loadProducts() {
+    /*
+        return [{ id: 1, name: 'Termo 1 Mickey', price: 100, qty: 18, img: 'https://statics.avenida.com/avenida/products/photos/fd/2cd/87a03ef2cd1f65ccb57afd1da6618edc_l.jpg' }, { id: 24, name: 'Equipo 2 de mate Mickey', price: 300, qty: 12, img: 'https://statics.avenida.com/avenida/products/photos/4a/1d4/1e1f7f01d4411f5cd7874a4de6656c5f_l.jpg' },
+        { id: 13, name: 'Termo 2 Mickey', price: 100, qty: 18, img: 'https://statics.avenida.com/avenida/products/photos/fd/2cd/87a03ef2cd1f65ccb57afd1da6618edc_l.jpg' }, { id: 21, name: 'Equipo 3 de mate Mickey', price: 300, qty: 12, img: 'https://statics.avenida.com/avenida/products/photos/4a/1d4/1e1f7f01d4411f5cd7874a4de6656c5f_l.jpg' },
+        { id: 15, name: 'Termo 3 Mickey', price: 100, qty: 18, img: 'https://statics.avenida.com/avenida/products/photos/fd/2cd/87a03ef2cd1f65ccb57afd1da6618edc_l.jpg' }, { id: 23, name: 'Equipo 4 de mate Mickey', price: 300, qty: 12, img: 'https://statics.avenida.com/avenida/products/photos/4a/1d4/1e1f7f01d4411f5cd7874a4de6656c5f_l.jpg' },
+        { id: 16, name: 'Termo 4 Mickey', price: 100, qty: 18, img: 'https://statics.avenida.com/avenida/products/photos/fd/2cd/87a03ef2cd1f65ccb57afd1da6618edc_l.jpg' }, { id: 25, name: 'Equipo 5 de mate Mickey', price: 300, qty: 12, img: 'https://statics.avenida.com/avenida/products/photos/4a/1d4/1e1f7f01d4411f5cd7874a4de6656c5f_l.jpg' }
+            , { id: 17, name: 'Termo 5 Mickey', price: 100, qty: 18, img: 'https://statics.avenida.com/avenida/products/photos/fd/2cd/87a03ef2cd1f65ccb57afd1da6618edc_l.jpg' }, { id: 28, name: 'Equipo 6 de mate Mickey', price: 300, qty: 12, img: 'https://statics.avenida.com/avenida/products/photos/4a/1d4/1e1f7f01d4411f5cd7874a4de6656c5f_l.jpg' }]
+    
+    */
+    /*
+    product_color: "blue"
+    product_department: "Gadgets"
+    product_departmentId: "gadgets"
+    product_image_lg: "https://dummyproducts-api.herokuapp.com/gadgets/mobilephone_600.png"
+    product_image_md: "https://dummyproducts-api.herokuapp.com/gadgets/mobilephone_300.png"
+    product_image_sm: "https://dummyproducts-api.herokuapp.com/gadgets/mobilephone_150.png"
+    product_material: "Metal"
+    product_name: "Risk-free Mobile Phone"
+    product_price: 293
+    product_ratings: 2
+    product_sales: 720
+    product_stock: 59
+    product_type: "Mobile Phone"
+    _id: "5fffae6e83fde83c1b4eaca7"
+    */
+    const baseUrl = "https://dummyproducts-api.herokuapp.com";
+    const mykey = "CrLqTfmXE_7t";
+    products = []
+    fetch(`${baseUrl}/api/v1/products?apikey=${mykey}`)
+        .then((response) => response.json())
+        .then(({ data }) =>
+            data.map((p) =>
+                (new Products(p._id, p.product_name, p.product_image_lg, p.product_price, p.product_stock))
+            )
+        )
+        .then((prod) => {
+            products = prod
+            show(products)
+        }
+        )
 
-    return [{ id: 1, name: 'Termo 1 Mickey', price: 100, qty: 18, img: 'https://statics.avenida.com/avenida/products/photos/fd/2cd/87a03ef2cd1f65ccb57afd1da6618edc_l.jpg' }, { id: 24, name: 'Equipo 2 de mate Mickey', price: 300, qty: 12, img: 'https://statics.avenida.com/avenida/products/photos/4a/1d4/1e1f7f01d4411f5cd7874a4de6656c5f_l.jpg' },
-    { id: 13, name: 'Termo 2 Mickey', price: 100, qty: 18, img: 'https://statics.avenida.com/avenida/products/photos/fd/2cd/87a03ef2cd1f65ccb57afd1da6618edc_l.jpg' }, { id: 21, name: 'Equipo 3 de mate Mickey', price: 300, qty: 12, img: 'https://statics.avenida.com/avenida/products/photos/4a/1d4/1e1f7f01d4411f5cd7874a4de6656c5f_l.jpg' },
-    { id: 15, name: 'Termo 3 Mickey', price: 100, qty: 18, img: 'https://statics.avenida.com/avenida/products/photos/fd/2cd/87a03ef2cd1f65ccb57afd1da6618edc_l.jpg' }, { id: 23, name: 'Equipo 4 de mate Mickey', price: 300, qty: 12, img: 'https://statics.avenida.com/avenida/products/photos/4a/1d4/1e1f7f01d4411f5cd7874a4de6656c5f_l.jpg' },
-    { id: 16, name: 'Termo 4 Mickey', price: 100, qty: 18, img: 'https://statics.avenida.com/avenida/products/photos/fd/2cd/87a03ef2cd1f65ccb57afd1da6618edc_l.jpg' }, { id: 25, name: 'Equipo 5 de mate Mickey', price: 300, qty: 12, img: 'https://statics.avenida.com/avenida/products/photos/4a/1d4/1e1f7f01d4411f5cd7874a4de6656c5f_l.jpg' }
-        , { id: 17, name: 'Termo 5 Mickey', price: 100, qty: 18, img: 'https://statics.avenida.com/avenida/products/photos/fd/2cd/87a03ef2cd1f65ccb57afd1da6618edc_l.jpg' }, { id: 28, name: 'Equipo 6 de mate Mickey', price: 300, qty: 12, img: 'https://statics.avenida.com/avenida/products/photos/4a/1d4/1e1f7f01d4411f5cd7874a4de6656c5f_l.jpg' }]
+
+    //  .then(({ id: _id, product_price: price }) => console.log(price))
 
 
 
@@ -79,10 +117,11 @@ function loadProducts() {
 
 //let itemsToadd = []
 let itemsToadd = localStorage.getItem("cartDemo") ? JSON.parse(localStorage.getItem('cartDemo')) : []
-let products = loadProducts()
+let products = []
+loadProducts()
 
 let cart = new Cart(itemsToadd)//set the initial items in the cart
-show(products)
+
 
 
 

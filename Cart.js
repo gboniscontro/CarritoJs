@@ -103,21 +103,25 @@ export default class Cart {
 
 
         hcart.innerHTML = items.map((item) => `
-                <tr>
-                    <td>#${item.id}</td>
-                    <td>${item.name}</td>
-                    <td>${item.qty}</td>
-                    <td style="width: 60px;">	
-                        <button type="button" class="btn btn-block btn-sm btn-outline-primary"
-                        id="btnplus${item.id}"  >+</button>
-                    </td>
-                    <td style="width: 60px;">
-                        <button type="button" class="btn btn-block btn-sm btn-outline-primary"
-                        id="btnmin${item.id}"   >-</button>
-                    </td>
-                    <td class="text-right">$${item.price}</td>
-                    <td class="text-right"><Button id="btndel${item.id}" class="btn btn-primary" >Delete</Button></td>
-                </tr>`).join("")
+        <div class="card border-primary mb-3" style="max-width: 20rem;">
+            <div class="card-header">#${item.id}</div>
+            <div class="card-body">
+                <h4 class="card-title">${item.name}</h4>
+                   <img  width=30px src="${item.img}" alt="product-image">
+                <h2 class="card-title">$${item.price}</h2>
+
+                <div class="row">
+                    <p class="card-text">${item.qty}
+                    <button class= "btn btn-outline-secondary" id="btnplus${item.id}"><i class="fas fa-plus"></i></button>
+                    <button class= "btn btn-outline-secondary"   id="btnmin${item.id}" ><i class="fas fa-minus"></i></button>
+               </p> </div>
+                <p class="card-text">$${new Intl.NumberFormat("de-DE").format(item.price * item.qty)}</p> 
+                <button class= "btn btn-danger" id="btndel${item.id}"><i class="fas fa-trash-alt"></i></button>
+
+              
+            </div>
+        </div>
+               `).join("")
         items.forEach(element => {
             total += element.price * element.qty
             arrNum.push(this.costoPorItemN(element)) //desestructurar
