@@ -80,6 +80,7 @@ export default class Cart {
     renderCart(items) {
         let total = 0;
         let arrNum = []
+        //console.log(products)
         const hcart = document.querySelector(".cart")
         hcart.innerHTML = items.map((item) => `
         <div class="card border-success mb-3" style="max-width: 20rem;">

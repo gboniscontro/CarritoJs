@@ -49,7 +49,7 @@ function loadProducts() {
     const baseUrl = "https://dummyproducts-api.herokuapp.com";
     const mykey = "CrLqTfmXE_7t";
     products = []
-    fetch(`${baseUrl}/api/v1/products?apikey=${mykey}`)
+    fetch(`${baseUrl}/api/v1/products?apikey=${mykey}&limit=50`)
         .then((response) => response.json())
         .then(({ data }) =>
             data.map((p) =>
