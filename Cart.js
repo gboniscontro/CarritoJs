@@ -104,22 +104,19 @@ export default class Cart {
 
         hcart.innerHTML = items.map((item) => `
         <div class="card border-primary mb-3" style="max-width: 20rem;">
-            <div class="card-header">#${item.id}</div>
-            <div class="card-body">
-                <h4 class="card-title">${item.name}</h4>
+            <div class="card-header">${item.name}</div>
+            <div class="card-body"><p>
                    <img  width=30px src="${item.img}" alt="product-image">
-                <h2 class="card-title">$${item.price}</h2>
-
-                <div class="row">
-                    <p class="card-text">${item.qty}
+                $${item.price}
                     <button class= "btn btn-outline-secondary" id="btnplus${item.id}"><i class="fas fa-plus"></i></button>
-                    <button class= "btn btn-outline-secondary"   id="btnmin${item.id}" ><i class="fas fa-minus"></i></button>
-               </p> </div>
+                    ${item.qty}&nbsp;&nbsp;<button class= "btn btn-outline-secondary"   id="btnmin${item.id}" ><i class="fas fa-minus"></i></button>
+               </p>
+               
+               <div class="row">
                 <p class="card-text">$${new Intl.NumberFormat("de-DE").format(item.price * item.qty)}</p> 
                 <button class= "btn btn-danger" id="btndel${item.id}"><i class="fas fa-trash-alt"></i></button>
-
-              
-            </div>
+                </div>
+           </div> 
         </div>
                `).join("")
         items.forEach(element => {
@@ -130,24 +127,23 @@ export default class Cart {
             document.getElementById(`btnmin${element.id}`).onclick = () => { this.quantity(element.id, -1) }
 
         });
-        console.log(total)
-        document.querySelector(".total").innerHTML = `$${total}`
-        console.log("calcularTotal", this.calcularTotal(arrNum))
-        console.log('Precio Maximo', Math.max(...arrNum))
+        //  console.log(total)
+        document.querySelector(".total").innerHTML = `$${new Intl.NumberFormat("de-DE").format(total)}`
+        //  console.log("calcularTotal", this.calcularTotal(arrNum))
+        // console.log('Precio Maximo', Math.max(...arrNum))
         localStorage.setItem("cartDemo", JSON.stringify(items))
     }
     costoPorItem({ price, qty }) {//desestructurar un objeto
         return price * qty
     }
     costoPorItemN({ price: precio, qty: cantidad }) {//desestructurar con otro nombre un objeto
-        console.log('Cantidad', cantidad, 'Precio', precio)
+        //  console.log('Cantidad', cantidad, 'Precio', precio)
         return cantidad * precio
     }
     calcularTotal(...numeros) {
         //console.log(numeros)
         //hay que llamarlo con el [0] para que ejecute el reduce con numeros enteros si no lo concatena como string
         return numeros[0].reduce((prev, sig) => prev + sig, 0)
-
     }
 
 

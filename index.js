@@ -2,6 +2,7 @@ import Cart from './Cart.js'
 import Products from './Products.js'
 
 
+
 function setDark() {
     document.querySelector(".navbar").classList.remove("navbar-light")
     document.querySelector(".navbar").classList.remove("bg-light")
@@ -22,9 +23,11 @@ function setLight() {
 function show(lproducts) {
     let hproducts = document.getElementById('Products');
     //console.log(lproducts)
-    hproducts.innerHTML = "<h2>Products</h2>"
+    hproducts.innerHTML = `
+        <h2>Products</h2>
+      `
     hproducts.innerHTML += lproducts.map(product => `
-    <div class="col-4 card mb-4 " >
+    <div class=" col-4 card mb-4" >
      <div class="card-header">${product.name}</div>
         <div class="card-body">
        
@@ -35,10 +38,14 @@ function show(lproducts) {
         </div>
     </div>`
     ).join('')
+
+
+
     for (let product of products) {
         //console.log(`btnAdd${product.id}`)
         document.getElementById(`btnAdd${product.id}`).addEventListener("click", () => { cart.addToCart({ id: product.id, name: product.name, price: product.price, img: product.img, qty: 1 }) })
     }
+
 
 
     //this.cart.addToCart({id:${product.id},name:'${product.name}',price:${product.price},img:'${product.img}',qty:1})
@@ -47,48 +54,10 @@ function show(lproducts) {
 // JavaScript code
 function search_prod() {
     //window.alert("a")
-    let input = document.getElementById('searchbar').value
-    input = input.toLowerCase();
-    products = loadProducts()
-    /*
-        for (let i = 0; i < products.length; i++) {
-            console.log(products[i].name.toLowerCase())
-            console.log(input)
-            if (!products[i].name.toLowerCase().includes(input)) {
-                products.every
-            }
-            else {
-    
-            }
-        }*/
-    products = products.filter((v) => v.name.toLowerCase().includes(input))
-    show(products)
+    loadProducts()//filtrar los productos por el boton search
 }
 function loadProducts() {
-    /*
-        return [{ id: 1, name: 'Termo 1 Mickey', price: 100, qty: 18, img: 'https://statics.avenida.com/avenida/products/photos/fd/2cd/87a03ef2cd1f65ccb57afd1da6618edc_l.jpg' }, { id: 24, name: 'Equipo 2 de mate Mickey', price: 300, qty: 12, img: 'https://statics.avenida.com/avenida/products/photos/4a/1d4/1e1f7f01d4411f5cd7874a4de6656c5f_l.jpg' },
-        { id: 13, name: 'Termo 2 Mickey', price: 100, qty: 18, img: 'https://statics.avenida.com/avenida/products/photos/fd/2cd/87a03ef2cd1f65ccb57afd1da6618edc_l.jpg' }, { id: 21, name: 'Equipo 3 de mate Mickey', price: 300, qty: 12, img: 'https://statics.avenida.com/avenida/products/photos/4a/1d4/1e1f7f01d4411f5cd7874a4de6656c5f_l.jpg' },
-        { id: 15, name: 'Termo 3 Mickey', price: 100, qty: 18, img: 'https://statics.avenida.com/avenida/products/photos/fd/2cd/87a03ef2cd1f65ccb57afd1da6618edc_l.jpg' }, { id: 23, name: 'Equipo 4 de mate Mickey', price: 300, qty: 12, img: 'https://statics.avenida.com/avenida/products/photos/4a/1d4/1e1f7f01d4411f5cd7874a4de6656c5f_l.jpg' },
-        { id: 16, name: 'Termo 4 Mickey', price: 100, qty: 18, img: 'https://statics.avenida.com/avenida/products/photos/fd/2cd/87a03ef2cd1f65ccb57afd1da6618edc_l.jpg' }, { id: 25, name: 'Equipo 5 de mate Mickey', price: 300, qty: 12, img: 'https://statics.avenida.com/avenida/products/photos/4a/1d4/1e1f7f01d4411f5cd7874a4de6656c5f_l.jpg' }
-            , { id: 17, name: 'Termo 5 Mickey', price: 100, qty: 18, img: 'https://statics.avenida.com/avenida/products/photos/fd/2cd/87a03ef2cd1f65ccb57afd1da6618edc_l.jpg' }, { id: 28, name: 'Equipo 6 de mate Mickey', price: 300, qty: 12, img: 'https://statics.avenida.com/avenida/products/photos/4a/1d4/1e1f7f01d4411f5cd7874a4de6656c5f_l.jpg' }]
-    
-    */
-    /*
-    product_color: "blue"
-    product_department: "Gadgets"
-    product_departmentId: "gadgets"
-    product_image_lg: "https://dummyproducts-api.herokuapp.com/gadgets/mobilephone_600.png"
-    product_image_md: "https://dummyproducts-api.herokuapp.com/gadgets/mobilephone_300.png"
-    product_image_sm: "https://dummyproducts-api.herokuapp.com/gadgets/mobilephone_150.png"
-    product_material: "Metal"
-    product_name: "Risk-free Mobile Phone"
-    product_price: 293
-    product_ratings: 2
-    product_sales: 720
-    product_stock: 59
-    product_type: "Mobile Phone"
-    _id: "5fffae6e83fde83c1b4eaca7"
-    */
+
     const baseUrl = "https://dummyproducts-api.herokuapp.com";
     const mykey = "CrLqTfmXE_7t";
     products = []
@@ -100,7 +69,9 @@ function loadProducts() {
             )
         )
         .then((prod) => {
-            products = prod
+            //filtro los productos por lo que esta puesto en el search
+            products = prod.filter((v) => v.name.toLowerCase().includes(document.getElementById('searchbar').value.toLowerCase()))
+
             show(products)
         }
         )
@@ -120,6 +91,9 @@ let itemsToadd = localStorage.getItem("cartDemo") ? JSON.parse(localStorage.getI
 let products = []
 loadProducts()
 
+
+
+
 let cart = new Cart(itemsToadd)//set the initial items in the cart
 
 
@@ -128,7 +102,19 @@ let cart = new Cart(itemsToadd)//set the initial items in the cart
 //aplico cond ternario
 let darkMode = localStorage.getItem("darkMode") ? localStorage.getItem('darkMode') : ""
 let flexSwitchCheckDefault = document.getElementById("flexSwitchCheckDefault")
+let emailUser = localStorage.getItem("emailUser") ? localStorage.getItem('emailUser') : ""
 //aplico cond ternario
+document.getElementById("lblUser").innerHTML = "Welcome User " + emailUser
+document.getElementById("exampleInputEmail1").value = emailUser
+document.getElementById("btnRegEmail").addEventListener("click",
+    () => {
+        emailUser = document.getElementById("exampleInputEmail1").value
+        localStorage.setItem('emailUser', emailUser)
+        document.getElementById("lblUser").innerHTML = "Welcome User " + emailUser
+        window.alert(document.getElementById("lblUser").innerHTML)
+    }
+)
+
 flexSwitchCheckDefault.addEventListener("change",
     () => flexSwitchCheckDefault.checked ? setDark() : setLight()
 )
@@ -137,6 +123,8 @@ flexSwitchCheckDefault.addEventListener("change",
 let searchbar = document.getElementById("searchbar")
 
 searchbar.addEventListener("keyup", () => search_prod())
+
+
 
 
 
