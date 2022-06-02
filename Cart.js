@@ -6,9 +6,7 @@ export default class Cart {
     }
     isItemInCart(currId) {
         return this.arrItems.some((value) => value.id == currId)
-
     }
-
     //aplico operador nullish 
     removeToCart(currId) {
         let index = 0
@@ -32,21 +30,13 @@ export default class Cart {
         let item = [];
         //debugger;
         if (!this.isItemInCart(currId)) {
-
             this.arrItems.push(e);
-
-
-
-
         }
         else {
             item = this.arrItems.find((value) => value.id == currId)
             item.qty++
         }
-
-
         this.renderCart(this.arrItems)
-
         // para entender el reduce el previosvalue es el que queda del return, y el current es el objeto
         //lo siguiente lo reduje en una linea solo desestructurando el objeto por la cantidad qty
         /*
@@ -56,7 +46,6 @@ export default class Cart {
         }, 0)
 */
         let totalItems = this.arrItems.reduce((prev, { qty }) => prev + qty, 0)
-
         swal({
             title: "Cart Product Added!",
             text: totalItems + " item(s) added to cart",
@@ -68,15 +57,11 @@ export default class Cart {
         })
             .then((value) => {
                 switch (value) {
-
                     case "cancel":
-
                         break;
-
                     case "view":
                         document.getElementById("mcart").click()
                         break;
-
                 }
             });
     }
@@ -86,24 +71,18 @@ export default class Cart {
             item.qty += num
         else
             item.qty = num
-
         if (item.qty == 0) {
             let index = this.arrItems.findIndex((value) => value.id == currId)
             this.arrItems.splice(index, 1)
-
         }
         this.renderCart(this.arrItems)
     }
-
     renderCart(items) {
         let total = 0;
         let arrNum = []
-
         const hcart = document.querySelector(".cart")
-
-
         hcart.innerHTML = items.map((item) => `
-        <div class="card border-primary mb-3" style="max-width: 20rem;">
+        <div class="card border-success mb-3" style="max-width: 20rem;">
             <div class="card-header">${item.name}</div>
             <div class="card-body"><p>
                    <img  width=30px src="${item.img}" alt="product-image">
@@ -125,13 +104,18 @@ export default class Cart {
             document.getElementById(`btndel${element.id}`).onclick = () => { this.deleteToCart(element.id) }
             document.getElementById(`btnplus${element.id}`).onclick = () => { this.quantity(element.id, 1) }
             document.getElementById(`btnmin${element.id}`).onclick = () => { this.quantity(element.id, -1) }
-
         });
         //  console.log(total)
         document.querySelector(".total").innerHTML = `$${new Intl.NumberFormat("de-DE").format(total)}`
         //  console.log("calcularTotal", this.calcularTotal(arrNum))
         // console.log('Precio Maximo', Math.max(...arrNum))
         localStorage.setItem("cartDemo", JSON.stringify(items))
+        if (total > 0) {
+            document.getElementById("btnCheckout").removeAttribute("disabled");
+        }
+        else {
+            document.getElementById("btnCheckout").setAttribute("disabled", "true");
+        }
     }
     costoPorItem({ price, qty }) {//desestructurar un objeto
         return price * qty
@@ -145,6 +129,4 @@ export default class Cart {
         //hay que llamarlo con el [0] para que ejecute el reduce con numeros enteros si no lo concatena como string
         return numeros[0].reduce((prev, sig) => prev + sig, 0)
     }
-
-
 }

@@ -5,7 +5,5 @@ export default class Products {
         this.img = img
         this.price = price
         this.qty = qty
-
     }
-
 }
