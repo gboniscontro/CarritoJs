@@ -46,6 +46,7 @@ export default class Cart {
         }, 0)
 */
         let totalItems = this.arrItems.reduce((prev, { qty }) => prev + qty, 0)
+        document.getElementById("mcart").innerHTML = "&nbsp;" + totalItems
         swal({
             title: "Cart Product Added!",
             text: totalItems + " item(s) added to cart",
@@ -117,6 +118,9 @@ export default class Cart {
         else {
             document.getElementById("btnCheckout").setAttribute("disabled", "true");
         }
+        let totalItems = this.arrItems.reduce((prev, { qty }) => prev + qty, 0)
+        document.getElementById("mcart").innerHTML = "&nbsp;" + totalItems
+
     }
     costoPorItem({ price, qty }) {//desestructurar un objeto
         return price * qty

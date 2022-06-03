@@ -19,6 +19,14 @@
     <script type="module" src="index.js"></script>
     <nav class="navbar navbar-expand-lg bg-dark navbar-dark">
         <div class="container-fluid">
+            <a class="nav-link" href="#">
+                <fieldset>
+                    <div class="form-check form-switch">
+                        <input class="form-check-input" checked type="checkbox" id="flexSwitchCheckDefault">
+                        <label class="form-check-label" for="flexSwitchCheckDefault">Dark Mode</label>
+                    </div>
+                </fieldset>
+            </a>
             <a id="lblUser" class="navbar-brand" href="#">Welcome</a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarColor01"
                 aria-controls="navbarColor01" aria-expanded="false" aria-label="Toggle navigation">
@@ -27,30 +35,28 @@
             <div class="collapse navbar-collapse" id="navbarColor01">
                 <ul class="navbar-nav me-auto">
                     <li class="nav-item">
-                        <a class="nav-link" href="#">
-                            <fieldset>
-                                <div class="form-check form-switch">
-                                    <input class="form-check-input" checked type="checkbox" id="flexSwitchCheckDefault">
-                                    <label class="form-check-label" for="flexSwitchCheckDefault">Dark Mode</label>
-                                </div>
-                            </fieldset>
-                        </a>
+
                     </li>
                     <li class="nav-item ">
                         <a id="btnRegistrar" data-bs-toggle="modal" data-bs-target="#idModal"
                             class="btn btn-secondary">Register User</a>
                     </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#"><i id="mcart" class="fa-solid fa-cart-shopping" type="button"
-                                data-bs-toggle="offcanvas" data-bs-target="#offcanvasRight"
-                                aria-controls="offcanvasRight" style="color:white"></i>
-                        </a>
-                    </li>
+
                 </ul>
+
+
                 <form class="d-flex">
                     <input id="searchbar" class="form-control me-sm-2" type="text" placeholder="Search">
                     <button class="btn btn-secondary my-2 my-sm-0" type="submit">Search</button>
+                    <a class="nav-link" href="#"><i id="mcart" class="fa-solid fa-cart-shopping" type="button"
+                            data-bs-toggle="offcanvas" data-bs-target="#offcanvasRight" aria-controls="offcanvasRight"
+                            style="color:white"></i>
+                    </a>
                 </form>
+
+
+
+
             </div>
         </div>
     </nav>
