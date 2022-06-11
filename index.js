@@ -16,7 +16,9 @@ function setDark() {
     document.querySelector(".navbar").classList.add("navbar-dark")
     document.querySelector(".navbar").classList.add("bg-dark")
     document.getElementById("mcart").style.color = "white"
+    document.querySelector('body').classList.add("darkMode")
     localStorage.setItem('darkMode', 'dark')
+    flexSwitchCheckDefault.setAttribute("checked", "true");
 }
 function setLight() {
     document.querySelector(".navbar").classList.remove("navbar-dark")
@@ -24,14 +26,16 @@ function setLight() {
     document.querySelector(".navbar").classList.add("navbar-light")
     document.querySelector(".navbar").classList.add("bg-light")
     document.getElementById("mcart").style.color = "black"
+    document.querySelector('body').classList.remove("darkMode")
     localStorage.setItem('darkMode', 'light')
+    flexSwitchCheckDefault.removeAttribute("checked")
 }
 function show(lproducts) {
     let hproducts = document.getElementById('Products');
     //console.log(lproducts)
     hproducts.innerHTML = `       
-            <div class="container py-5">
-                <div class="row">    
+            <div class="container py-5 ">
+                <div class="row  d-flex align-items-stretch">    
       `
     /*hproducts.innerHTML += lproducts.map(product => `
     <div class="card border-info  p-2 col-3  " >
@@ -50,17 +54,16 @@ function show(lproducts) {
     ).join('')
 */
     hproducts.innerHTML += lproducts.map(product => `
-        <div class="col-md-3 col-lg-3 mb-4 mb-md-0">
-            <div class="card">
-               
+        <div class="col-md-3 col-lg-3 mb-4 mb-md-0  d-flex align-items-stretch">
+            <div class="card h-100">               
                 <img src="${product.img}"
                     class="card-img-top "  />
                 <div class="card-body">
                     
 
                     <div class="d-flex justify-content-between mb-3">
-                        <h5 class="mb-0">${product.name}</h5>
-                        <h5 class="text-dark mb-0">$${product.price}</h5>
+                        <h6 class="mb-0">${product.name}</h5>
+                        <h6 class="text-dark mb-0">$${product.price}</h5>
                     </div>
 
                     <div class="d-flex justify-content-between mb-2">
@@ -96,10 +99,10 @@ function search_prod() {
 async function loadProducts() {
     const baseUrl = "https://dummyproducts-api.herokuapp.com";
     const mykey = "CrLqTfmXE_7t";
-    const apiurl = `${baseUrl}/api/v1/products?apikey=${mykey}&limit=21`
-    const apiurl2 = 'https://dummyjson.com/products'
+    const apiurl = `${baseUrl}/api/v1/products?apikey=${mykey}`
+    //const apiurl2 = 'https://dummyjson.com/products'
     products = []
-    /*fetch(apiurl)
+    fetch(apiurl)
         .then((response) => response.json())
         .then(({ products }) =>
             products.map((p) =>
@@ -119,27 +122,30 @@ async function loadProducts() {
 
         }
         )
-        */
+        .catch(() => {
+            fetch("products.json")
+                .then(response => response.json())
+                .then(json => json)
+                .then(({ data }) =>
+                    data.map((p) =>
+                        (new Products(p._id, p.product_name, p.product_image_lg, p.product_price, p.product_stock))
+                    )
+                )
+                .then((prod) => {
 
-    fetch(apiurl2)//si por alguna razon da error la primer api uso la 2da api 
-        .then((response) => response.json())
-        .then(({ products }) =>
-            products.map((p) =>
-                (new Products(p.id, p.title, p.thumbnail, p.price, p.stock))
-            )
-        )
-        .then((prod) => {
+                    products = prod
+                    console.log('load products')
+                    //aca despues de que se cargo los productos voy a agarrar el carrito del storage y verificar que los precios 
+                    // y los items sean los correctos
+                    itemsStorage = localStorage.getItem("cartDemo") ? JSON.parse(localStorage.getItem('cartDemo')) : []
+                    matchearCarritoStorage(products, itemsStorage)
+                    //filtro los productos que se muestran por lo que esta puesto en el search pero en el global de productos siempre aparecen todos
+                    search_prod()
 
-            products = prod
-            console.log('load products')
-            //aca despues de que se cargo los productos voy a agarrar el carrito del storage y verificar que los precios 
-            // y los items sean los correctos
-            itemsStorage = localStorage.getItem("cartDemo") ? JSON.parse(localStorage.getItem('cartDemo')) : []
-            matchearCarritoStorage(products, itemsStorage)
-            //filtro los productos que se muestran por lo que esta puesto en el search pero en el global de productos siempre aparecen todos
-            search_prod()
-
+                }
+                )
         }
+
         )
 }
 //en esta funcion asigno el precio que figura en la api de productos
@@ -188,14 +194,14 @@ const validateEmail = (email) => {
 };
 //traigo los productos de una api y los filtro si hay algo en el input search
 await loadProducts()
-//en esta funcion asigno los valores correctos si cambio el precio de los productos del carrito
-//y elimino los productos del carrito que no se encuentran en los productos disponibles
 
-//set the initial items in the cart
+
 //aplico cond ternario
 let darkMode = localStorage.getItem("darkMode") ? localStorage.getItem('darkMode') : ""
 let emailUser = localStorage.getItem("emailUser") ? localStorage.getItem('emailUser') : ""
 let flexSwitchCheckDefault = document.getElementById("flexSwitchCheckDefault")
+
+
 if (validateEmail(emailUser)) {
     document.getElementById("btnRegister").innerHTML = emailUser
     document.getElementById("exampleInputEmail1").value = emailUser
@@ -272,6 +278,9 @@ document.getElementById("btnCheckout").addEventListener("click",
                     button: "Ok!",
                 })
                     .then((value) => {
+                        //borro todas las selecciones para empezar de cero para una proxima compra
+                        //la unica que dejo es el email porque lo dejo siempre si ya se encuentra logueado
+                        searchbar.value = ""
                         removerStockdeCarritoComprado(products, cart.arrItems)
                         localStorage.setItem("cartDemo", "");
                         cart = new Cart()
@@ -280,8 +289,19 @@ document.getElementById("btnCheckout").addEventListener("click",
             }
     }
 )
+
+
+
+
 flexSwitchCheckDefault.addEventListener("change",
     () => flexSwitchCheckDefault.checked ? setDark() : setLight()
 )
+
+
 let searchbar = document.getElementById("searchbar")
 searchbar.addEventListener("keyup", () => search_prod())
+
+if (darkMode == 'dark')
+    setDark()
+else
+    setLight();
