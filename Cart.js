@@ -95,6 +95,8 @@ export default class Cart {
     renderCart(items) {
         let total = 0;
         let arrNum = []
+        let itemsStorage = []
+
         //console.log(products)
         const hcart = document.querySelector(".cart")
         /*  hcart.innerHTML = items.map((item) => `
@@ -158,6 +160,9 @@ export default class Cart {
             document.getElementById(`btnmin${element.id}`).onclick = () => { this.quantity(element.id, -1) }
             let qa = document.getElementById(`btnplus${element.id}`).parentNode.querySelector('input[type=number]')
             qa.onchange = () => { this.quantityChange(element.id, qa.value) }
+            //creo un nuevo array para guardar en el storage solo con id y qty 
+            let { id, qty } = element
+            itemsStorage.push({ id, qty })
 
 
         });
@@ -165,7 +170,8 @@ export default class Cart {
         document.querySelector(".total").innerHTML = `$${new Intl.NumberFormat("de-DE").format(total)}`
         //  console.log("calcularTotal", this.calcularTotal(arrNum))
         // console.log('Precio Maximo', Math.max(...arrNum))
-        localStorage.setItem("cartDemo", JSON.stringify(items))
+
+        localStorage.setItem("cartDemo", JSON.stringify(itemsStorage))
         if (total > 0) {
             document.getElementById("btnCheckout").removeAttribute("disabled");
         }

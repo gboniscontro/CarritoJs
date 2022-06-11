@@ -1,7 +1,10 @@
 import Cart from './Cart.js'
 import Products from './Products.js'
-let itemsToadd = localStorage.getItem("cartDemo") ? JSON.parse(localStorage.getItem('cartDemo')) : []
 let products = []
+let cart //se inicializara recien cuando se haya cargado los productos de la api
+let itemsStorage = []
+let itemsToaddCart = []
+
 //seteo una variable global para que una vez que se registro correctamente se 
 //ejecute devuelta el checkout del carrito en caso de que el haya apretado antes el boton checkout y 
 // no lo haya dejado realizar la compra por no estar registrado el email
@@ -26,28 +29,58 @@ function setLight() {
 function show(lproducts) {
     let hproducts = document.getElementById('Products');
     //console.log(lproducts)
-    hproducts.innerHTML = `
-        <h2>Products</h2>
+    hproducts.innerHTML = `       
+            <div class="container py-5">
+                <div class="row">    
       `
-    hproducts.innerHTML += lproducts.map(product => `
+    /*hproducts.innerHTML += lproducts.map(product => `
     <div class="card border-info  p-2 col-3  " >
      <div class="card-header">${product.name}</div>
         <div class="card-body">
        
-            <img  width=120px src="${product.img}" alt="product-image">
+            <div class="col-md-9 col-lg-9 col-xl-9">
+             <img src="${product.img}" class="img-fluid rounded-3" >
+             </div>
             <h1 class="card-title pricing-card-title">${product.price}$</h1>
+            <h4 class="card-title stock-card-title">${product.qty}</h1>
             <button type="button" id="btnAdd${product.id}" class="btn btn-block btn-outline-primary"
                >Add to Cart</button>
         </div>
     </div>`
     ).join('')
+*/
+    hproducts.innerHTML += lproducts.map(product => `
+        <div class="col-md-3 col-lg-3 mb-4 mb-md-0">
+            <div class="card">
+               
+                <img src="${product.img}"
+                    class="card-img-top "  />
+                <div class="card-body">
+                    
+
+                    <div class="d-flex justify-content-between mb-3">
+                        <h5 class="mb-0">${product.name}</h5>
+                        <h5 class="text-dark mb-0">$${product.price}</h5>
+                    </div>
+
+                    <div class="d-flex justify-content-between mb-2">
+                        <p class="text-muted mb-0">Available: <span class="fw-bold">${product.qty}</span></p>
+                       
+                       
+                    </div> 
+                    <div class="d-flex justify-content-between mb-2">
+                    <button type="button" id="btnAdd${product.id}" class="btn btn-block btn-outline-primary">Add to Cart</button>
+                    </div>
+                </div>
+            </div>
+      </div>`
+    ).join('') + `</div></div>`
     for (let product of lproducts) {
         //console.log(`btnAdd${product.id}`)
         document.getElementById(`btnAdd${product.id}`).addEventListener("click", () => { cart.addToCart({ id: product.id, name: product.name, price: product.price, img: product.img, qty: 1 }) })
     }
     //this.cart.addToCart({id:${product.id},name:'${product.name}',price:${product.price},img:'${product.img}',qty:1})
 }
-// JavaScript code
 function search_prod() {
     //window.alert("a")
     //loadProducts()//filtrar los productos por el boton search
@@ -60,36 +93,93 @@ function search_prod() {
     else
         show(products)
 }
-function loadProducts() {
+async function loadProducts() {
     const baseUrl = "https://dummyproducts-api.herokuapp.com";
     const mykey = "CrLqTfmXE_7t";
+    const apiurl = `${baseUrl}/api/v1/products?apikey=${mykey}&limit=21`
+    const apiurl2 = 'https://dummyjson.com/products'
     products = []
-    fetch(`${baseUrl}/api/v1/products?apikey=${mykey}&limit=21`)
+    /*fetch(apiurl)
         .then((response) => response.json())
-        .then(({ data }) =>
-            data.map((p) =>
+        .then(({ products }) =>
+            products.map((p) =>
                 (new Products(p._id, p.product_name, p.product_image_lg, p.product_price, p.product_stock))
             )
         )
         .then((prod) => {
-            //filtro los productos por lo que esta puesto en el search
+
             products = prod
+            console.log('load products')
+            //aca despues de que se cargo los productos voy a agarrar el carrito del storage y verificar que los precios 
+            // y los items sean los correctos
+            itemsStorage = localStorage.getItem("cartDemo") ? JSON.parse(localStorage.getItem('cartDemo')) : []
+            matchearCarritoStorage(products, itemsStorage)
+            //filtro los productos que se muestran por lo que esta puesto en el search pero en el global de productos siempre aparecen todos
             search_prod()
+
+        }
+        )
+        */
+
+    fetch(apiurl2)//si por alguna razon da error la primer api uso la 2da api 
+        .then((response) => response.json())
+        .then(({ products }) =>
+            products.map((p) =>
+                (new Products(p.id, p.title, p.thumbnail, p.price, p.stock))
+            )
+        )
+        .then((prod) => {
+
+            products = prod
+            console.log('load products')
+            //aca despues de que se cargo los productos voy a agarrar el carrito del storage y verificar que los precios 
+            // y los items sean los correctos
+            itemsStorage = localStorage.getItem("cartDemo") ? JSON.parse(localStorage.getItem('cartDemo')) : []
+            matchearCarritoStorage(products, itemsStorage)
+            //filtro los productos que se muestran por lo que esta puesto en el search pero en el global de productos siempre aparecen todos
+            search_prod()
+
         }
         )
 }
 //en esta funcion asigno el precio que figura en la api de productos
 //es por las dudas si el usuario me modifica el precio en la localstorage
-function matchearCarritoStorage(prod, itemsCart) {
-    for (const eC of itemsCart) {
-        for (const eP of prod) {
-            if (eP.id == eC.id) {
-                eC.price = eP.price
-                eC.name = eP.name
-                eC.img = eP.img
+//o no llegan a estar los mismos productos con el id que estaba guardado en el localstorage
+function matchearCarritoStorage(prod, items) {
+    console.log('matchear carritos');
+    for (const { id: idC, qty } of items) {
+        for (const { id, name, price, img } of prod) {
+            if (id == idC) {
+
+                itemsToaddCart.push({ id, name, price, qty, img })
             }
         }
     }
+    cart = new Cart(itemsToaddCart)
+
+}
+//saco el stock de los productos que se compraron
+function removerStockdeCarritoComprado(prod, items) {
+    for (let { id: idC, qty } of items) {
+        for (let p of prod) {
+            if (p.id == idC) {
+                p.qty = p.qty - qty
+            }
+        }
+    }
+    show(prod)
+}
+
+//devuelve true si no hay stock para el carrito elegido 
+function nohayStockSuficiente(prod, items) {
+    for (let { id: idC, qty } of items) {
+        for (let p of prod) {
+            if (p.id == idC && p.qty < qty) {
+                return true
+            }
+        }
+    }
+    return false
 }
 const validateEmail = (email) => {
     return email.match(
@@ -97,11 +187,11 @@ const validateEmail = (email) => {
     );
 };
 //traigo los productos de una api y los filtro si hay algo en el input search
-loadProducts()
+await loadProducts()
 //en esta funcion asigno los valores correctos si cambio el precio de los productos del carrito
 //y elimino los productos del carrito que no se encuentran en los productos disponibles
-matchearCarritoStorage(products, itemsToadd)
-let cart = new Cart(itemsToadd)//set the initial items in the cart
+
+//set the initial items in the cart
 //aplico cond ternario
 let darkMode = localStorage.getItem("darkMode") ? localStorage.getItem('darkMode') : ""
 let emailUser = localStorage.getItem("emailUser") ? localStorage.getItem('emailUser') : ""
@@ -159,20 +249,35 @@ document.getElementById("btnCheckout").addEventListener("click",
             }
             )
         }
-        else {
-            globalEjecutarCheckout = false
-            swal({
-                title: "Cart Checkout Succesfull!",
-                text: "You should contact by email " + emailUser + " to do the send of your products",
-                icon: "success",
-                button: "Ok!",
-            })
-                .then((value) => {
-                    localStorage.setItem("cartDemo", "");
-                    cart = new Cart()
-                    document.getElementById("mcart").click()
-                });
-        }
+        else
+            if (nohayStockSuficiente(products, cart.arrItems)) {
+                swal({
+                    title: "Cart Checkout ERROR!",
+                    text: "Stock no available, Please verify quantity of every products in the cart with the stocks available",
+                    icon: "error",
+                    button: "Ok!",
+                }).then(() => {
+                    //aca tendria que mostrar una advertencia en cada item del carrito q no tiene stock
+                    //pero por ahora lo dejamos asi je
+                }
+                )
+
+            }
+            else {
+                globalEjecutarCheckout = false
+                swal({
+                    title: "Cart Checkout Succesfull!",
+                    text: "You should contact by email " + emailUser + " to do the send of your products",
+                    icon: "success",
+                    button: "Ok!",
+                })
+                    .then((value) => {
+                        removerStockdeCarritoComprado(products, cart.arrItems)
+                        localStorage.setItem("cartDemo", "");
+                        cart = new Cart()
+                        document.getElementById("mcart").click()
+                    });
+            }
     }
 )
 flexSwitchCheckDefault.addEventListener("change",
