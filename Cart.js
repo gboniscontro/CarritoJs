@@ -66,12 +66,26 @@ export default class Cart {
                 }
             });
     }
+    //sirve solo para incrementar la cantidad  o disminuirla
     quantity(currId, num) {
         let item = this.arrItems.find((value) => value.id == currId)
         if (item.qty > 0)
             item.qty += num
         else
             item.qty = num
+        //si la cantidad da 0 lo elimino directamente            
+        if (item.qty == 0) {
+            let index = this.arrItems.findIndex((value) => value.id == currId)
+            this.arrItems.splice(index, 1)
+        }
+        this.renderCart(this.arrItems)
+    }
+
+    //este sirve cuando uno toca el numero directamente de la cantidad
+    quantityChange(currId, num) {
+        let item = this.arrItems.find((value) => value.id == currId)
+        item.qty = parseInt(num)
+        //si la cantidad da 0 lo elimino directamente    
         if (item.qty == 0) {
             let index = this.arrItems.findIndex((value) => value.id == currId)
             this.arrItems.splice(index, 1)
@@ -116,13 +130,13 @@ export default class Cart {
                         </div>
                         <div class="col-md-3 col-lg-3 col-xl-2 d-flex">
                             <button class="btn btn-link px-2"  id="btnmin${item.id}"
-                                onclick="this.parentNode.querySelector('input[type=number]').stepDown()">
+                               >
                                 <i class="fas fa-minus"></i>
                             </button>
-                            <input id="form1" min="0" name="quantity" value="${item.qty}" type="number"
+                            <input id="form1" min="0" id="quantity${item.id}" value="${item.qty}" type="number"
                                 class="form-control form-control-sm" style="width:50px" />
                             <button class="btn btn-link px-2" id="btnplus${item.id}"
-                                onclick="this.parentNode.querySelector('input[type=number]').stepUp()">
+                               >
                                 <i class="fas fa-plus"></i>
                             </button>
                         </div>
@@ -139,8 +153,13 @@ export default class Cart {
             total += element.price * element.qty
             arrNum.push(this.costoPorItemN(element)) //desestructurar
             document.getElementById(`btndel${element.id}`).onclick = () => { this.deleteToCart(element.id) }
+
             document.getElementById(`btnplus${element.id}`).onclick = () => { this.quantity(element.id, 1) }
             document.getElementById(`btnmin${element.id}`).onclick = () => { this.quantity(element.id, -1) }
+            let qa = document.getElementById(`btnplus${element.id}`).parentNode.querySelector('input[type=number]')
+            qa.onchange = () => { this.quantityChange(element.id, qa.value) }
+
+
         });
         //  console.log(total)
         document.querySelector(".total").innerHTML = `$${new Intl.NumberFormat("de-DE").format(total)}`
