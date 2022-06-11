@@ -83,23 +83,58 @@ export default class Cart {
         let arrNum = []
         //console.log(products)
         const hcart = document.querySelector(".cart")
+        /*  hcart.innerHTML = items.map((item) => `
+          <div class="card border-success mb-3" style="max-width: 20rem;">
+              <div class="card-header">${item.name}</div>
+              <div class="card-body">
+              <p>
+                     <img  width=30px src="${item.img}" alt="product-image">
+                  $${item.price}
+                      <button class= "btn btn-outline-secondary" id="btnplus${item.id}"><i class="fas fa-plus"></i></button>
+                      ${item.qty}&nbsp;&nbsp;<button class= "btn btn-outline-secondary"   id="btnmin${item.id}" ><i class="fas fa-minus"></i></button>
+                 </p>
+              <span class="card-text">$${new Intl.NumberFormat("de-DE").format(item.price * item.qty)}</span> 
+              
+                 <div class="row">
+                    <button class= "btn btn-danger" id="btndel${item.id}"><i class="fas fa-trash-alt"></i></button>
+                  </div>
+             </div> 
+          </div>
+                 `).join("")
+                 */
         hcart.innerHTML = items.map((item) => `
-        <div class="card border-success mb-3" style="max-width: 20rem;">
-            <div class="card-header">${item.name}</div>
-            <div class="card-body"><p>
-                   <img  width=30px src="${item.img}" alt="product-image">
-                $${item.price}
-                    <button class= "btn btn-outline-secondary" id="btnplus${item.id}"><i class="fas fa-plus"></i></button>
-                    ${item.qty}&nbsp;&nbsp;<button class= "btn btn-outline-secondary"   id="btnmin${item.id}" ><i class="fas fa-minus"></i></button>
-               </p>
-               
-               <div class="row">
-                <p class="card-text">$${new Intl.NumberFormat("de-DE").format(item.price * item.qty)}</p> 
-                <button class= "btn btn-danger" id="btndel${item.id}"><i class="fas fa-trash-alt"></i></button>
+            <div class="card rounded-3 mb-4" >
+                <div class="card-body p-4">
+                    <div class="row d-flex justify-content-between align-items-center">
+                        <div class="col-md-2 col-lg-2 col-xl-2">
+                            <img src="${item.img}"
+                                class="img-fluid rounded-3" >
+                        </div>
+                        <div class="col-md-3 col-lg-3 col-xl-3">
+                            <p class="lead fw-normal mb-2">${item.name} </p>
+                            
+                        </div>
+                        <div class="col-md-3 col-lg-3 col-xl-2 d-flex">
+                            <button class="btn btn-link px-2"  id="btnmin${item.id}"
+                                onclick="this.parentNode.querySelector('input[type=number]').stepDown()">
+                                <i class="fas fa-minus"></i>
+                            </button>
+                            <input id="form1" min="0" name="quantity" value="${item.qty}" type="number"
+                                class="form-control form-control-sm" style="width:50px" />
+                            <button class="btn btn-link px-2" id="btnplus${item.id}"
+                                onclick="this.parentNode.querySelector('input[type=number]').stepUp()">
+                                <i class="fas fa-plus"></i>
+                            </button>
+                        </div>
+                        <div class="col-md-3 col-lg-2 col-xl-2 offset-lg-1">
+                            <h5 class="mb-0">$${new Intl.NumberFormat("de-DE").format(item.price * item.qty)}</h5>
+                        </div>
+                        <div class="col-md-1 col-lg-1 col-xl-1 text-end">
+                            <a href="#!" class="text-danger"  id="btndel${item.id}"><i class="fas fa-trash fa-lg"></i></a>
+                        </div>
+                    </div>
                 </div>
-           </div> 
-        </div>
-               `).join("")
+                        </div >`).join("")
         items.forEach(element => {
             total += element.price * element.qty
             arrNum.push(this.costoPorItemN(element)) //desestructurar
@@ -120,7 +155,6 @@ export default class Cart {
         }
         let totalItems = this.arrItems.reduce((prev, { qty }) => prev + qty, 0)
         document.getElementById("mcart").innerHTML = "&nbsp;" + totalItems
-
     }
     costoPorItem({ price, qty }) {//desestructurar un objeto
         return price * qty

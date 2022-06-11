@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -14,49 +13,34 @@
     <link rel="stylesheet" href="https://site-assets.fontawesome.com/releases/v6.1.1/css/all.css">
     <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
 </head>
-
 <body>
     <script type="module" src="index.js"></script>
     <nav class="navbar navbar-expand-lg bg-dark navbar-dark">
         <div class="container-fluid">
-            <a class="nav-link" href="#">
-                <fieldset>
-                    <div class="form-check form-switch">
-                        <input class="form-check-input" checked type="checkbox" id="flexSwitchCheckDefault">
-                        <label class="form-check-label" for="flexSwitchCheckDefault">Dark Mode</label>
-                    </div>
-                </fieldset>
+            <a class="nav-link" href="#"><i id="mcart" class="fa-solid fa-cart-shopping" type="button"
+                    data-bs-toggle="offcanvas" data-bs-target="#offcanvasRight" aria-controls="offcanvasRight"
+                    style="color:white"></i>
             </a>
             <a id="lblUser" class="navbar-brand" href="#">Welcome</a>
+            <a id="btnRegister" data-bs-toggle="modal" data-bs-target="#idModal" class="btn btn-secondary">Register
+                User</a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarColor01"
                 aria-controls="navbarColor01" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
-            <div class="collapse navbar-collapse" id="navbarColor01">
-                <ul class="navbar-nav me-auto">
-                    <li class="nav-item">
-
-                    </li>
-                    <li class="nav-item ">
-                        <a id="btnRegistrar" data-bs-toggle="modal" data-bs-target="#idModal"
-                            class="btn btn-secondary">Register User</a>
-                    </li>
-
-                </ul>
-
-
+            <div class="collapse navbar-collapse  flex-row-reverse" id="navbarColor01">
                 <form class="d-flex">
                     <input id="searchbar" class="form-control me-sm-2" type="text" placeholder="Search">
                     <button class="btn btn-secondary my-2 my-sm-0" type="submit">Search</button>
-                    <a class="nav-link" href="#"><i id="mcart" class="fa-solid fa-cart-shopping" type="button"
-                            data-bs-toggle="offcanvas" data-bs-target="#offcanvasRight" aria-controls="offcanvasRight"
-                            style="color:white"></i>
-                    </a>
                 </form>
-
-
-
-
+                <a class="nav-link" href="#">
+                    <fieldset>
+                        <div class="form-check form-switch">
+                            <input class="form-check-input" checked type="checkbox" id="flexSwitchCheckDefault">
+                            <label class="form-check-label" for="flexSwitchCheckDefault">Dark Mode</label>
+                        </div>
+                    </fieldset>
+                </a>
             </div>
         </div>
     </nav>
@@ -64,7 +48,175 @@
         <div id="Products" class="gap-2 row align-items-start">
             Please wait while the products loading....
         </div>
-        <div width="50%" class="offcanvas offcanvas-end" id="offcanvasRight" aria-labelledby="offcanvasRightLabel">
+        <!-- <section class="h-100 offcanvas offcanvas-end" style="width:800px;background-color: #eee;" id="offcanvasRight"
+            aria-labelledby="offcanvasRightLabel">
+            <div class="container h-100 py-5">
+                <div class="row d-flex justify-content-center align-items-center h-100">
+                    <div class="col-10">
+                        <div class="d-flex justify-content-between align-items-center mb-4">
+                            <h3 class="fw-normal mb-0 text-black">Shopping Cart</h3>
+                            <div>
+                                <p class="mb-0"><span class="text-muted">Sort by:</span> <a href="#!"
+                                        class="text-body">price <i class="fas fa-angle-down mt-1"></i></a></p>
+                            </div>
+                        </div>
+                        <div class="card rounded-3 mb-4">
+                            <div class="card-body p-4">
+                                <div class="row d-flex justify-content-between align-items-center">
+                                    <div class="col-md-2 col-lg-2 col-xl-2">
+                                        <img src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-shopping-carts/img1.webp"
+                                            class="img-fluid rounded-3" alt="Cotton T-shirt">
+                                    </div>
+                                    <div class="col-md-3 col-lg-3 col-xl-3">
+                                        <p class="lead fw-normal mb-2">Basic T-shirt</p>
+                                        <p><span class="text-muted">Size: </span>M <span class="text-muted">Color:
+                                            </span>Grey
+                                        </p>
+                                    </div>
+                                    <div class="col-md-3 col-lg-3 col-xl-2 d-flex">
+                                        <button class="btn btn-link px-2"
+                                            onclick="this.parentNode.querySelector('input[type=number]').stepDown()">
+                                            <i class="fas fa-minus"></i>
+                                        </button>
+                                        <input id="form1" min="0" name="quantity" value="2" type="number"
+                                            class="form-control form-control-sm" />
+                                        <button class="btn btn-link px-2"
+                                            onclick="this.parentNode.querySelector('input[type=number]').stepUp()">
+                                            <i class="fas fa-plus"></i>
+                                        </button>
+                                    </div>
+                                    <div class="col-md-3 col-lg-2 col-xl-2 offset-lg-1">
+                                        <h5 class="mb-0">$499.00</h5>
+                                    </div>
+                                    <div class="col-md-1 col-lg-1 col-xl-1 text-end">
+                                        <a href="#!" class="text-danger"><i class="fas fa-trash fa-lg"></i></a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card rounded-3 mb-4">
+                            <div class="card-body p-4">
+                                <div class="row d-flex justify-content-between align-items-center">
+                                    <div class="col-md-2 col-lg-2 col-xl-2">
+                                        <img src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-shopping-carts/img1.webp"
+                                            class="img-fluid rounded-3" alt="Cotton T-shirt">
+                                    </div>
+                                    <div class="col-md-3 col-lg-3 col-xl-3">
+                                        <p class="lead fw-normal mb-2">Basic T-shirt</p>
+                                        <p><span class="text-muted">Size: </span>M <span class="text-muted">Color:
+                                            </span>Grey
+                                        </p>
+                                    </div>
+                                    <div class="col-md-3 col-lg-3 col-xl-2 d-flex">
+                                        <button class="btn btn-link px-2"
+                                            onclick="this.parentNode.querySelector('input[type=number]').stepDown()">
+                                            <i class="fas fa-minus"></i>
+                                        </button>
+                                        <input id="form1" min="0" name="quantity" value="2" type="number"
+                                            class="form-control form-control-sm" />
+                                        <button class="btn btn-link px-2"
+                                            onclick="this.parentNode.querySelector('input[type=number]').stepUp()">
+                                            <i class="fas fa-plus"></i>
+                                        </button>
+                                    </div>
+                                    <div class="col-md-3 col-lg-2 col-xl-2 offset-lg-1">
+                                        <h5 class="mb-0">$499.00</h5>
+                                    </div>
+                                    <div class="col-md-1 col-lg-1 col-xl-1 text-end">
+                                        <a href="#!" class="text-danger"><i class="fas fa-trash fa-lg"></i></a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card rounded-3 mb-4">
+                            <div class="card-body p-4">
+                                <div class="row d-flex justify-content-between align-items-center">
+                                    <div class="col-md-2 col-lg-2 col-xl-2">
+                                        <img src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-shopping-carts/img1.webp"
+                                            class="img-fluid rounded-3" alt="Cotton T-shirt">
+                                    </div>
+                                    <div class="col-md-3 col-lg-3 col-xl-3">
+                                        <p class="lead fw-normal mb-2">Basic T-shirt</p>
+                                        <p><span class="text-muted">Size: </span>M <span class="text-muted">Color:
+                                            </span>Grey
+                                        </p>
+                                    </div>
+                                    <div class="col-md-3 col-lg-3 col-xl-2 d-flex">
+                                        <button class="btn btn-link px-2"
+                                            onclick="this.parentNode.querySelector('input[type=number]').stepDown()">
+                                            <i class="fas fa-minus"></i>
+                                        </button>
+                                        <input id="form1" min="0" name="quantity" value="2" type="number"
+                                            class="form-control form-control-sm" />
+                                        <button class="btn btn-link px-2"
+                                            onclick="this.parentNode.querySelector('input[type=number]').stepUp()">
+                                            <i class="fas fa-plus"></i>
+                                        </button>
+                                    </div>
+                                    <div class="col-md-3 col-lg-2 col-xl-2 offset-lg-1">
+                                        <h5 class="mb-0">$499.00</h5>
+                                    </div>
+                                    <div class="col-md-1 col-lg-1 col-xl-1 text-end">
+                                        <a href="#!" class="text-danger"><i class="fas fa-trash fa-lg"></i></a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card rounded-3 mb-4">
+                            <div class="card-body p-4">
+                                <div class="row d-flex justify-content-between align-items-center">
+                                    <div class="col-md-2 col-lg-2 col-xl-2">
+                                        <img src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-shopping-carts/img1.webp"
+                                            class="img-fluid rounded-3" alt="Cotton T-shirt">
+                                    </div>
+                                    <div class="col-md-3 col-lg-3 col-xl-3">
+                                        <p class="lead fw-normal mb-2">Basic T-shirt</p>
+                                        <p><span class="text-muted">Size: </span>M <span class="text-muted">Color:
+                                            </span>Grey
+                                        </p>
+                                    </div>
+                                    <div class="col-md-3 col-lg-3 col-xl-2 d-flex">
+                                        <button class="btn btn-link px-2"
+                                            onclick="this.parentNode.querySelector('input[type=number]').stepDown()">
+                                            <i class="fas fa-minus"></i>
+                                        </button>
+                                        <input id="form1" min="0" name="quantity" value="2" type="number"
+                                            class="form-control form-control-sm" />
+                                        <button class="btn btn-link px-2"
+                                            onclick="this.parentNode.querySelector('input[type=number]').stepUp()">
+                                            <i class="fas fa-plus"></i>
+                                        </button>
+                                    </div>
+                                    <div class="col-md-3 col-lg-2 col-xl-2 offset-lg-1">
+                                        <h5 class="mb-0">$499.00</h5>
+                                    </div>
+                                    <div class="col-md-1 col-lg-1 col-xl-1 text-end">
+                                        <a href="#!" class="text-danger"><i class="fas fa-trash fa-lg"></i></a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card mb-4">
+                            <div class="card-body p-4 d-flex flex-row">
+                                <div class="form-outline flex-fill">
+                                    <input type="text" id="form1" class="form-control form-control-lg" />
+                                    <label class="form-label" for="form1">Discound code</label>
+                                </div>
+                                <button type="button" class="btn btn-outline-warning btn-lg ms-3">Apply</button>
+                            </div>
+                        </div>
+                        <div class="card">
+                            <div class="card-body">
+                                <button type="button" class="btn btn-warning btn-block btn-lg">Proceed to Pay</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        -->
+        <div width="100%" class="offcanvas offcanvas-end" style="width:800px;background-color: #eee;"
+            id="offcanvasRight" aria-labelledby="offcanvasRightLabel">
             <div class="offcanvas-header">
                 Checkout Cart
                 <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
@@ -112,13 +264,11 @@
                     </form>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" id="btnRegEmail" data-bs-dismiss="modal" class="btn btn-primary">Save
+                    <button type="button" id="btnOkEmail" data-bs-dismiss="modal" class="btn btn-primary">Save
                         changes</button>
-
                 </div>
             </div>
         </div>
     </div>
 </body>
-
 </html>
